@@ -1,11 +1,11 @@
 const express = require('express');
 const routes = express.Router();
-const authMiddleware = require("../../middleware/auth.middleware");
+const adminAuthMiddleware = require("../../middleware/admin.auth.middleware");
 
-let Category = require('./category.model');
+let Category = require('../../models/category.model');
 
 // routes.route('/create').post((req,res) => {
-routes.post('/create', authMiddleware, (req, res) => {
+routes.post('/create', adminAuthMiddleware, (req, res) => {
     let obj ={
         name: req.body.name
     };
@@ -24,7 +24,7 @@ routes.post('/create', authMiddleware, (req, res) => {
 });
 
 // routes.route('/').get( async (req, res)=> {
-routes.get('/', authMiddleware, async (req, res) => {
+routes.get('/', adminAuthMiddleware, async (req, res) => {
 
     let categories = await Category.find({})
         .then(result => {
@@ -41,7 +41,7 @@ routes.get('/', authMiddleware, async (req, res) => {
 });
 
 // routes.route('/:id').get((req,res)=>{
-routes.get('/:id', authMiddleware, (req, res) => {
+routes.get('/:id', adminAuthMiddleware, (req, res) => {
     let id = req.params.id;
     Category.findById(id,(err, category) =>{
         if(err) return console.error(err);
@@ -56,7 +56,7 @@ routes.get('/:id', authMiddleware, (req, res) => {
 });
 
 // routes.route('/update/:id').post((req,res)=>{
-routes.post('/update/:id', authMiddleware,  (req, res) => {
+routes.post('/update/:id', adminAuthMiddleware,  (req, res) => {
     let id = req.params.id;
     
     Category.findById(id, (err, category)=>{
@@ -75,7 +75,7 @@ routes.post('/update/:id', authMiddleware,  (req, res) => {
 });
 
 // routes.route('/delete/:id').delete((req,res)=>{
-routes.delete('/delte/:id', authMiddleware, (req, res) => {
+routes.delete('/delte/:id', adminAuthMiddleware, (req, res) => {
     let id = req.params.id;
 
     Category.findByIdAndRemove({_id: id}, (err,category)=>{

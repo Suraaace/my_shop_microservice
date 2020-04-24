@@ -1,11 +1,10 @@
 const express = require('express');
 const routes = express.Router();
-var randomstring = require("randomstring");
-let User = require('./user.model');
-const authMiddleware = require("../../middleware/auth.middleware");
+let User = require('../../models/user.model');
+const frontendAuthMiddleware = require("../../middleware/frontend.auth.middleware");
 
 // routes.route('/create').post((req, res) => {
-routes.post('/create', authMiddleware, (req, res) => {
+routes.post('/create', frontendAuthMiddleware, (req, res) => {
 
     let obj = {
         firstName: req.body.firstName,
@@ -29,7 +28,7 @@ routes.post('/create', authMiddleware, (req, res) => {
 });
 
 // routes.route('/').get( async (req, res) => {
-routes.get('/', authMiddleware, async (req, res) => { // for authorization
+routes.get('/', frontendAuthMiddleware, async (req, res) => { // for authorization
     let search = JSON.parse(req.query.search);
     // let search = {};
     // if(req.query.search) search = JSON.parse(req.query.search);
@@ -75,7 +74,7 @@ routes.get('/', authMiddleware, async (req, res) => { // for authorization
 });
 
 // routes.route('/:id').get((req, res) => {
-routes.get('/:id', authMiddleware, (req, res) => {
+routes.get('/:id', frontendAuthMiddleware, (req, res) => {
     let id = req.params.id;
 
     //User.findById(id, (err, user) => {
@@ -92,7 +91,7 @@ routes.get('/:id', authMiddleware, (req, res) => {
 });
 
 // routes.route('/update/:id').post((req, res) => {
-routes.post('/update/:id', authMiddleware, (req, res) => {
+routes.post('/update/:id', frontendAuthMiddleware, (req, res) => {
     let id = req.params.id;
 
     User.findById(id, (err, user) => {
@@ -118,7 +117,7 @@ routes.post('/update/:id', authMiddleware, (req, res) => {
 });
 
 // routes.route('/delete/:id').delete((req, res) => {
-routes.delete('/delete/:id', authMiddleware, (req, res) =>{
+routes.delete('/delete/:id', frontendAuthMiddleware, (req, res) =>{
     //Fetch Data from Database
 
     let id = req.params.id;

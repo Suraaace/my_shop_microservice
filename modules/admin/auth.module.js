@@ -1,6 +1,6 @@
 const express = require('express');
 const routes = express.Router();
-const User = require("../user/user.model");
+const User = require("../../models/user.model");
 
 // api/auth/login
 routes.post('/login', async ( req, res) => {
@@ -23,6 +23,8 @@ routes.post('/login', async ( req, res) => {
             data: {
                 _id: user._id,
                 email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 token: token
             }
         };

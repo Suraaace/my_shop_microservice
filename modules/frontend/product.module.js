@@ -1,55 +1,54 @@
 const express = require("express");
 const routes = express.Router();
-const authMiddleware = require("../../middleware/auth.middleware");
+const frontendAuthMiddleware = require("../../middleware/frontend.auth.middleware");
 
 
-let Product = require('./product.model');
+let Product = require('../../models/product.model');
 
 // routes.route('/').get( async (req, res) => {
-routes.get('/', authMiddleware, async (req, res) => {
-    
-    let search = {};
-    if(req.query.search) search = JSON.parse(req.query.search);
-    
-    
-    let dataCount = await Product.countDocuments(); // awaits stops the threads untill this line executes.
+routes.get('/', frontendAuthMiddleware, async (req, res) => {
 
-    let limit = parseInt(req.query.limit);
-    let offset = parseInt(req.query.offset);
-
-    let filter ={};
-   
-    if(search.name) {
-        filter["name"]={
-            $regex: '.*'+ search.name + '.*',
-            $options: 'i'
+    try {
+        let search = {};
+        if(req.query.name) {
+            search["name"] = {
+                $regex: '.*'+ req.query.name + '.*',
+                $options: 'i'
+            }
         }
+        if(req.query.isFeatured) search['isFeatured'] = req.query.isFeatured;
+        if(req.query.isPopular) search['isPopular'] = req.query.isPopular;
+        if(req.query.price) search['isPopular'] = req.query.price;
+
+        let dataCount = await Product.countDocuments(search);
+
+        let limit = parseInt(req.query.limit);
+        let offset = parseInt(req.query.offset);
+
+        let product = await Product.find(search)
+            .populate('category')
+            .skip(offset)
+            .limit(limit);
+
+        let response={
+            success : true,
+            message : "List of Products.",
+            data : product,
+            count : dataCount
+        };
+
+        res.status(200).json(response);
+
+    } catch (err) {
+        res.status(400).send({
+            success: false,
+            message: err
+        });
     }
-
-    if(search.price) {
-        filter["price"] ={
-            $regex: '.*' + search.price + '.*',
-            $options: 'i'
-        }
-    }
-
-    let product = await Product.find(filter)
-        .populate('category')
-        .skip(offset)
-        .limit(limit);
-
-    let response={
-        success : true,
-        message : "List of Products.",
-        data : product,
-        count : dataCount
-    };
-
-    res.status(200).json(response);
 });
 
 // routes.route('/:id').get((req, res)=>{
-routes.get('/', authMiddleware, (req, res) => {
+routes.get('/:id', frontendAuthMiddleware, (req, res) => {
 
     let id = req.params.id;
 
@@ -67,7 +66,7 @@ routes.get('/', authMiddleware, (req, res) => {
 });
 
 // routes.route('/create').post((req,res) => {
-routes.post('/create', authMiddleware, (req, res) => { 
+routes.post('/create', frontendAuthMiddleware, (req, res) => {
     let obj = {
         name : req.body.name,
         description : req.body.description,
@@ -89,7 +88,7 @@ routes.post('/create', authMiddleware, (req, res) => {
 });
 
 // routes.route('/update/:id').post((req, res) => {
-routes.post('/update/:id', authMiddleware, (req, res) => {
+routes.post('/update/:id', frontendAuthMiddleware, (req, res) => {
     
     let id = req.params.id;
 
@@ -116,7 +115,7 @@ routes.post('/update/:id', authMiddleware, (req, res) => {
 });
 
 // routes.route('/delete/:id').delete((req, res) =>{
-routes.delete('/delete/:id', authMiddleware, (req, res) => {
+routes.delete('/delete/:id', frontendAuthMiddleware, (req, res) => {
     let id = req.params.id;
 
     Product.findByIdAndRemove({_id: id}, (err, product) =>{

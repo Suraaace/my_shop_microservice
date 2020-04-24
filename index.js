@@ -18,21 +18,40 @@ app.use(bodyParser.urlencoded({
 
 require('./DB');
 
-// Routes
-const authRoutes = require('./modules/auth/auth.route');
-app.use('/api/auth', authRoutes);
+// ====================== Frontend Routes ======================
+//require('./routes/admin.routes');
+//require('./routes/frontend.routes');
 
-const userRoutes = require('./modules/user/user.route');
-app.use('/api/user', userRoutes);
+const authFrontendModule = require('./modules/frontend/auth.module');
+app.use('/api/auth', authFrontendModule);
 
-const productRoutes = require('./modules/product/product.route');
-app.use('/api/product', productRoutes);
+const userFrontendModule = require('./modules/frontend/user.module');
+app.use('/api/user', userFrontendModule);
 
-const categoryRoutes = require('./modules/category/category.route');
-app.use('/api/category', categoryRoutes);
+const productFrontendModule = require('./modules/frontend/product.module');
+app.use('/api/product', productFrontendModule);
 
-const orderRoutes = require('./modules/order/order.route');
-app.use('/api/order', orderRoutes);
+const categoryFrontendModule = require('./modules/frontend/category.module');
+app.use('/api/category', categoryFrontendModule);
+
+const orderFrontendModule = require('./modules/frontend/order.module');
+app.use('/api/order', orderFrontendModule);
+
+//====================== Backend Routes ======================
+const authAdminModule = require('./modules/admin/auth.module');
+app.use('/api/admin/auth', authAdminModule);
+
+const userAdminModule = require('./modules/admin/user.module');
+app.use('/api/admin/user', userAdminModule);
+
+const productAdminModule = require('./modules/admin/product.module');
+app.use('/api/admin/product', productAdminModule);
+
+const categoryAdminModule = require('./modules/admin/category.module');
+app.use('/api/admin/category', categoryAdminModule);
+
+const orderAdminModule = require('./modules/admin/order.module');
+app.use('/api/admin/order', orderAdminModule);
 
 let port = process.env.PORT;
 app.listen(port);
