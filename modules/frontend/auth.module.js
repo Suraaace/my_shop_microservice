@@ -11,7 +11,6 @@ routes.post('/login', async ( req, res) => {
         const user = await User.verifyCredentials(email, password);
 
         if(!user) {
-
             return res.status(401).send("Login failed")
         }
 
@@ -37,10 +36,6 @@ routes.post('/login', async ( req, res) => {
             message: "invalid credentials"
         });
     }
-
-    //es5 => node
-    //es6 => react
-
 });
 
 module.exports = routes;

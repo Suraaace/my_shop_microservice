@@ -26,18 +26,27 @@ routes.post('/create', frontendAuthMiddleware, (req, res) => {
 // routes.route('/').get( async (req, res)=> {
 routes.get('/', frontendAuthMiddleware, async (req, res) => {
 
-    let categories = await Category.find({})
+    try {
+        let categories = await Category.find({})
         .then(result => {
             return result;
         })
         .catch(err => console.log(err));
 
-    let response = {
-        success: true,
-        message: "Category List",
-        data: categories
-    };
-    res.status(200).json(response);
+        let response = {
+            success: true,
+            message: "Category List",
+            data: categories
+        };
+
+        res.status(200).json(response);
+
+    } catch (err) {
+        res.status(200).send({
+            success: false,
+            message: err
+        })
+    }
 });
 
 // routes.route('/:id').get((req,res)=>{
@@ -75,7 +84,7 @@ routes.post('/update/:id', frontendAuthMiddleware,  (req, res) => {
 });
 
 // routes.route('/delete/:id').delete((req,res)=>{
-routes.delete('/delte/:id', frontendAuthMiddleware, (req, res) => {
+routes.delete('/delete/:id', frontendAuthMiddleware, (req, res) => {
     let id = req.params.id;
 
     Category.findByIdAndRemove({_id: id}, (err,category)=>{
