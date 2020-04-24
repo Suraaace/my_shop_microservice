@@ -22,7 +22,7 @@
     npm install 
     nodemon 
     ```
-    _ Result after command __nodemon__ must be __Database is connected__
+    Result after command **nodemon** must be **Database is connected**
 
 This confirms you successfullt setup the respository locally. 
 Else re-run the process. 
