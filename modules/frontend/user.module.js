@@ -27,7 +27,6 @@ routes.post('/create', frontendAuthMiddleware, (req, res) => {
 routes.get('/:id', frontendAuthMiddleware, (req, res) => {
     let id = req.params.id;
 
-    //User.findById(id, (err, user) => {
     User.findOne({_id: id}, (err, user) => {
         if (err) return console.error(err);
         let response = {
@@ -65,8 +64,7 @@ routes.post('/update/:id', frontendAuthMiddleware, (req, res) => {
 });
 
 routes.delete('/delete/:id', frontendAuthMiddleware, (req, res) =>{
-    //Fetch Data from Database
-
+   
     let id = req.params.id;
     
     User.findByIdAndRemove({_id: id}, (err, user) => {

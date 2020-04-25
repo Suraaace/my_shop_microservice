@@ -4,7 +4,6 @@ const adminAuthMiddleware = require("../../middleware/admin.auth.middleware");
 
 let Category = require('../../models/category.model');
 
-// routes.route('/create').post((req,res) => {
 routes.post('/create', adminAuthMiddleware, (req, res) => {
     
     try {
@@ -29,7 +28,6 @@ routes.post('/create', adminAuthMiddleware, (req, res) => {
     }
 });
 
-// routes.route('/').get( async (req, res)=> {
 routes.get('/', adminAuthMiddleware, async (req, res) => {
 
     try {
@@ -56,7 +54,6 @@ routes.get('/', adminAuthMiddleware, async (req, res) => {
     }   
 });
 
-// routes.route('/:id').get((req,res)=>{
 routes.get('/:id', adminAuthMiddleware, (req, res) => {
     let id = req.params.id;
     Category.findById(id,(err, category) =>{
@@ -71,7 +68,6 @@ routes.get('/:id', adminAuthMiddleware, (req, res) => {
     });
 });
 
-// routes.route('/update/:id').post((req,res)=>{
 routes.post('/update/:id', adminAuthMiddleware,  (req, res) => {
     let id = req.params.id;
     
@@ -90,7 +86,6 @@ routes.post('/update/:id', adminAuthMiddleware,  (req, res) => {
     });
 });
 
-// routes.route('/delete/:id').delete((req,res)=>{
 routes.delete('/delete/:id', adminAuthMiddleware, (req, res) => {
     let id = req.params.id;
 

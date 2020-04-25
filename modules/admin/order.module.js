@@ -3,7 +3,6 @@ const routes = express.Router();
 const adminAuthMiddleware = require("../../middleware/admin.auth.middleware");
 let Order = require('../../models/order.model');
 
-//routes.route('/').get( async (req, res) => {
 routes.get('/', adminAuthMiddleware, async (req, res) => {
     
     try{
@@ -48,7 +47,6 @@ routes.get('/', adminAuthMiddleware, async (req, res) => {
     }
 });
 
-// routes.route('/create').post((req, res) => {
 routes.post('/create', adminAuthMiddleware, (req, res) => {
     let obj ={
         product: req.body.product,
@@ -68,7 +66,6 @@ routes.post('/create', adminAuthMiddleware, (req, res) => {
     })
 });
 
-// routes.route('/update/:id').post((req, res) => {
 routes.post('/update/:id', adminAuthMiddleware, (req, res) => {
     let id = req.params.id;
     
@@ -91,7 +88,6 @@ routes.post('/update/:id', adminAuthMiddleware, (req, res) => {
     });
 });
 
-// routes.route('/delete/:id').delete((req, res) => {
 routes.delete('/delete/:id', adminAuthMiddleware, (req,res) => {
     
     let id = req.params.id;

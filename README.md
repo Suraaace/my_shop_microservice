@@ -24,5 +24,44 @@
     ```
     Result after command **nodemon** must be **Database is connected**
 
-This confirms you successfullt setup the respository locally. 
-Else re-run the process. 
+# Postman
+    Once setup is complete open **Postman**.
+    - Create folder with project name [you can write any feasible to you].
+    - Create differnt rquest required as per the necessity 
+    - Get, Post, Delete 
+    This confirms you successfullt setup the respository locally. 
+    Else re-run the process. 
+
+### Example of POST
+##### Create a new user /api/admin/user/create
+    - for createing a new user 
+    - additional flag role; default value 7 unless defined
+    - JSON input
+    ```
+    {
+        "firstName" : "Kiran",
+        "lastName" : "Mulmi",
+        "email" : "kiranmulmi@gmail.com",
+        "password" : "abcdef",
+        "phone" : "1234567890"        
+    }
+    ```
+    - JSON response
+
+    ```
+    {
+        "_id" : "5e78c54d79771f735e76537",
+        "__v" : "0",
+        "firstName" : "Kiran",
+        "lastName" : "Mulmi", 
+        "phone" : "98676987982",
+        "email" : "kiranmulmi@gmail.com",
+        "password" : "$2b$08$.X1Hf3gZNICMOrYk569DTOjHqo/wlQDyvVjXmtTB3pjQynRQYyim"
+        "role" : "7" 
+    }
+    ```  
+
+# License
+    Copyright ©
+
+
