@@ -1,14 +1,24 @@
-const authAdminModule = require('./modules/admin/auth.module');
-app.use('/api/admin/auth', authAdminModule);
+const routes = [
+    {
+        url: '/api/admin/auth',
+        module: require('../modules/admin/auth.module')
+    },
+    {
+        url: '/api/admin/user',
+        module: require('../modules/admin/user.module')
+    },
+    {
+        url: '/api/admin/product',
+        module: require('../modules/admin/product.module')
+    },
+    {
+        url: '/api/admin/category',
+        module: require('../modules/admin/category.module')
+    },
+    {
+        url: '/api/admin/order',
+        module: require('../modules/admin/order.module')
+    },
+];
 
-const userAdminModule = require('./modules/admin/user.module');
-app.use('/api/admin/user', userAdminModule);
-
-const productAdminModule = require('./modules/admin/product.module');
-app.use('/api/admin/product', productAdminModule);
-
-const categoryAdminModule = require('./modules/admin/category.module');
-app.use('/api/admin/category', categoryAdminModule);
-
-const orderAdminModule = require('./modules/admin/order.module');
-app.use('/api/admin/order', orderAdminModule);
+module.exports = routes;
