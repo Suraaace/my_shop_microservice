@@ -6,15 +6,14 @@ const adminAuthMiddleware = require("../../middleware/admin.auth.middleware");
 // routes.route('/create').post((req, res) => {
 routes.post('/create', adminAuthMiddleware, (req, res) => {
 
-    let obj = {
+    let user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         password: req.body.password,
-        phone: req.body.phone
-    };
-
-    let user = new User(obj);
+        phone: req.body.phone,
+        role: req.body.role
+    });
 
     user.save().then( (user) => {
         let response = {
@@ -31,7 +30,7 @@ routes.post('/create', adminAuthMiddleware, (req, res) => {
 routes.get('/', adminAuthMiddleware, async (req, res) => { // for authorization
    
     try {
-        let search = JSON.parse(req.query.search);
+        let search = {};
    
         let dataCount = await User.countDocuments();
 
@@ -39,27 +38,26 @@ routes.get('/', adminAuthMiddleware, async (req, res) => { // for authorization
         let offset = parseInt(req.query.offset); // starting point
 
         let filter = {};
-        if(search.firstName) {
-            //filter["firstName"] = search.firstName; // Exact search
-            filter["firstName"] = {
-                $regex: '.*' + search.firstName + '.*',
-                $options: 'i'
-            } // Like Search
-        }
-
-        if(search.lastName){
-            filter["lastName"] ={
-                $regex: '.*' + search.lastName +'.*',
-                $options: 'i'
-            }
-        }
-
-        if(search.email) {
-            filter["email"] = {
-                $regex: '.*' + search.email + '.*',
-                $options: 'i'
-            }
-        }
+        // if(search.firstName) {
+        //     filter["firstName"] = {
+        //         $regex: '.*' + search.firstName + '.*',
+        //         $options: 'i'
+        //     }
+        // }
+        //
+        // if(search.lastName){
+        //     filter["lastName"] ={
+        //         $regex: '.*' + search.lastName +'.*',
+        //         $options: 'i'
+        //     }
+        // }
+        //
+        // if(search.email) {
+        //     filter["email"] = {
+        //         $regex: '.*' + search.email + '.*',
+        //         $options: 'i'
+        //     }
+        // }
 
         let user = await User.find(filter).skip(offset).limit(limit);
 
@@ -109,6 +107,7 @@ routes.post('/update/:id', adminAuthMiddleware, (req, res) => {
         user.email = req.body.email;
         user.password = req.body.password;
         user.phone = req.body.phone;
+        user.role = req.body.role;
 
         user.save().then( (user) => {
             let response = {

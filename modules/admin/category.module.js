@@ -8,11 +8,10 @@ let Category = require('../../models/category.model');
 routes.post('/create', adminAuthMiddleware, (req, res) => {
     
     try {
-        let obj ={
-            name: req.body.name
-        }
     
-        let category = new Category(obj);
+        let category = new Category({
+            name: req.body.name
+        });
     
         category.save().then( (category) => {
             let response = {
