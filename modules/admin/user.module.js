@@ -29,48 +29,54 @@ routes.post('/create', adminAuthMiddleware, (req, res) => {
 
 // routes.route('/').get( async (req, res) => {
 routes.get('/', adminAuthMiddleware, async (req, res) => { // for authorization
-    let search = JSON.parse(req.query.search);
-    // let search = {};
-    // if(req.query.search) search = JSON.parse(req.query.search);
+   
+    try {
+        let search = JSON.parse(req.query.search);
+   
+        let dataCount = await User.countDocuments();
 
-    let dataCount = await User.countDocuments();
+        let limit = parseInt(req.query.limit); // how many data
+        let offset = parseInt(req.query.offset); // starting point
 
-    let limit = parseInt(req.query.limit); // how many data
-    let offset = parseInt(req.query.offset); // starting point
-
-    let filter = {};
-    if(search.firstName) {
-        //filter["firstName"] = search.firstName; // Exact search
-        filter["firstName"] = {
-            $regex: '.*' + search.firstName + '.*',
-            $options: 'i'
-        } // Like Search
-    }
-
-    if(search.lastName){
-        filter["lastName"] ={
-            $regex: '.*' + search.lastName +'.*',
-            $options: 'i'
+        let filter = {};
+        if(search.firstName) {
+            //filter["firstName"] = search.firstName; // Exact search
+            filter["firstName"] = {
+                $regex: '.*' + search.firstName + '.*',
+                $options: 'i'
+            } // Like Search
         }
-    }
 
-    if(search.email) {
-        filter["email"] = {
-            $regex: '.*' + search.email + '.*',
-            $options: 'i'
+        if(search.lastName){
+            filter["lastName"] ={
+                $regex: '.*' + search.lastName +'.*',
+                $options: 'i'
+            }
         }
-    }
 
-    let user = await User.find(filter).skip(offset).limit(limit);
+        if(search.email) {
+            filter["email"] = {
+                $regex: '.*' + search.email + '.*',
+                $options: 'i'
+            }
+        }
 
-    let response = {
-        success: true,
-        message: "Users Listing",
-        data: user,
-        count: dataCount
-    };
+        let user = await User.find(filter).skip(offset).limit(limit);
 
-    res.status(200).json(response);
+        let response = {
+            success: true,
+            message: "Users Listing",
+            data: user,
+            count: dataCount
+        };
+
+        res.status(200).json(response);
+    } catch (err) {
+        res.status(200).send({
+            success: false,
+            message: err
+        })
+    }   
 });
 
 // routes.route('/:id').get((req, res) => {
