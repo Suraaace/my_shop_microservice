@@ -6,38 +6,55 @@ let Category = require('../../models/category.model');
 
 // routes.route('/create').post((req,res) => {
 routes.post('/create', adminAuthMiddleware, (req, res) => {
-    let obj ={
-        name: req.body.name
-    };
-
-    let category = new Category(obj);
-
-    category.save().then( (category) => {
-        let response = {
-            success: true,
-            message: "Category is successfully created",
-            data: category
-        };
-        res.status(200).json(response);
-    });
-
+    
+    try {
+        let obj ={
+            name: req.body.name
+        }
+    
+        let category = new Category(obj);
+    
+        category.save().then( (category) => {
+            let response = {
+                success: true,
+                message: "Category is successfully created",
+                data: category
+            };
+            res.status(200).json(response);
+        });
+    } catch (err) {
+        res.status(400).send({
+            success: false,
+            message: err
+        });
+    }
 });
 
 // routes.route('/').get( async (req, res)=> {
 routes.get('/', adminAuthMiddleware, async (req, res) => {
 
-    let categories = await Category.find({})
+    try {
+
+        let categories = await Category.find({})
         .then(result => {
             return result;
         })
         .catch(err => console.log(err));
 
-    let response = {
-        success: true,
-        message: "Category List",
-        data: categories
-    };
-    res.status(200).json(response);
+        let response = {
+            success: true,
+            message: "Category List",
+            data: categories
+        };
+
+        res.status(200).json(response);
+
+    } catch (err) {
+        res.status(200).send({
+            success: false,
+            message: err
+        })
+    }   
 });
 
 // routes.route('/:id').get((req,res)=>{
@@ -75,7 +92,7 @@ routes.post('/update/:id', adminAuthMiddleware,  (req, res) => {
 });
 
 // routes.route('/delete/:id').delete((req,res)=>{
-routes.delete('/delte/:id', adminAuthMiddleware, (req, res) => {
+routes.delete('/delete/:id', adminAuthMiddleware, (req, res) => {
     let id = req.params.id;
 
     Category.findByIdAndRemove({_id: id}, (err,category)=>{

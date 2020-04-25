@@ -5,50 +5,47 @@ let Order = require('../../models/order.model');
 
 //routes.route('/').get( async (req, res) => {
 routes.get('/', adminAuthMiddleware, async (req, res) => {
-    let search = {};
-    if (req.query.search)  search = JSON.parse(req.query.search);
-
-    let dataCount = await Order.countDocuments();
-
-    let limit = parseInt(req.query.limit);
-    let offset = parseInt(req.query.offset);
-
-
-    let filter = {};
-    // if(req.query.user) {
-    //     filter['user'] = req.query.user;
-    // }
-
-
-    if(search.product) {
-        filter["product"] = {
-            $regex: '.*' + search.product + '.*',
-            $options: 'i'
-        }
-    }
-
-    if(search.user) {
-        filter["user"] = {
-            $regex : '.*' + search.user + '.*',
-            $options: 'i'
-        }
-    }
-
     
+    try{
+        let search = {};
+        if (req.query.product){
+            search["product"] = {
+                $regex: '.*' + req.query.product + '.*',
+                $options: 'i'
+            }
+        } 
+        if (req.query.user){
+            search["user"] ={
+                $regex: '.*'+req.query.user + '.*',
+                $options: 'i'   
+            }
+        }
 
-    let order = await Order.find(filter)
-        .populate('user')  // shows the all the obejct data ie user data
-        .populate('product')
-        .skip(offset)
-        .limit(limit);
+        let dataCount = await Order.countDocuments(search); // give no of search in case of search
 
-    let response = {
-         success: true,
-         message: "Order Listing",
-         data: order,
-         count : dataCount          
-    };
-    res.status(200).json(response);
+        let limit = parseInt(req.query.limit);
+        let offset = parseInt(req.query.offset); 
+
+        let order = await Order.find(search)
+            .populate('user')  // shows the all the obejct data ie user data
+            .populate('product')
+            .skip(offset)
+            .limit(limit);
+
+        let response = {
+            success: true,
+            message: "Order Listing",
+            data: order,
+            count : dataCount          
+        };
+        res.status(200).json(response);
+
+    } catch (err) {
+        res.status(400).send({
+            success: false,
+            message: err
+        });
+    }
 });
 
 // routes.route('/create').post((req, res) => {
