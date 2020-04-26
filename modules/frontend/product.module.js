@@ -2,7 +2,6 @@ const express = require("express");
 const routes = express.Router();
 const frontendAuthMiddleware = require("../../middleware/frontend.auth.middleware");
 
-
 let Product = require('../../models/product.model');
 
 routes.get('/', frontendAuthMiddleware, async (req, res) => {
