@@ -28,6 +28,7 @@ const userSchema = new Schema({
         type: String
     },
 }, {
+    timestamps: true,
     collection: 'users'
 });
 

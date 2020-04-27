@@ -7,7 +7,8 @@ const categorySchema = new Schema({
     }
 },
     {
-       collection: 'çategories' 
+        timestamps: true,
+        collection: 'çategories' 
 });
 
 const Category = mongoose.model('Category', categorySchema);
