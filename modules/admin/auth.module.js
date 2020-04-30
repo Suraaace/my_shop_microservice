@@ -15,6 +15,10 @@ routes.post('/login', async ( req, res) => {
             return res.status(401).send("Login failed")
         }
 
+        if(user.role === 7) {
+            throw new Error('erro');
+        }
+
         const token = await user.generateAuthToken();
 
         let response = {
@@ -34,7 +38,7 @@ routes.post('/login', async ( req, res) => {
     } catch (err) {
         res.status(400).send({
             success: false,
-            message: "invalid credentials"
+            message: "Cant login at the moment"
         });
     }
 

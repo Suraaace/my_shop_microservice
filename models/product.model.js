@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const productSchema = new Schema({
+const productSchema = new Schema(
+    {
         name: {
             type: String
         },
@@ -28,6 +29,7 @@ const productSchema = new Schema({
         }
     },   
     {
+        timestamps: true,
         collection : 'products'
     });
 

@@ -19,10 +19,16 @@ const userSchema = new Schema({
     phone: {
         type: String
     },
+    role: {
+        type: Number,
+        enum: [3, 4, 7],
+        default: 7
+    },
     token: {
         type: String
     },
 }, {
+    timestamps: true,
     collection: 'users'
 });
 

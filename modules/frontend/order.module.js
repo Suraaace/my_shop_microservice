@@ -3,7 +3,6 @@ const routes = express.Router();
 const frontendAuthMiddleware = require("../../middleware/frontend.auth.middleware");
 let Order = require('../../models/order.model');
 
-//routes.route('/').get( async (req, res) => {
 routes.get('/', frontendAuthMiddleware, async (req, res) => {
     try{
         let search = {};
@@ -47,7 +46,6 @@ routes.get('/', frontendAuthMiddleware, async (req, res) => {
     }
 });
 
-// routes.route('/create').post((req, res) => {
 routes.post('/create', frontendAuthMiddleware, (req, res) => {
     let obj ={
         product: req.body.product,

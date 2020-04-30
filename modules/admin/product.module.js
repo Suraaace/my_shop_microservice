@@ -46,7 +46,6 @@ routes.get('/', adminAuthMiddleware, async (req, res) => {
     }
 });
 
-// routes.route('/:id').get((req, res)=>{
 routes.get('/:id', adminAuthMiddleware, (req, res) => {
 
     let id = req.params.id;
@@ -64,7 +63,6 @@ routes.get('/:id', adminAuthMiddleware, (req, res) => {
 
 });
 
-// routes.route('/create').post((req,res) => {
 routes.post('/create', adminAuthMiddleware, (req, res) => {
     let obj = {
         name : req.body.name,
@@ -86,7 +84,6 @@ routes.post('/create', adminAuthMiddleware, (req, res) => {
     })
 });
 
-// routes.route('/update/:id').post((req, res) => {
 routes.post('/update/:id', adminAuthMiddleware, (req, res) => {
     
     let id = req.params.id;
@@ -113,7 +110,6 @@ routes.post('/update/:id', adminAuthMiddleware, (req, res) => {
 
 });
 
-// routes.route('/delete/:id').delete((req, res) =>{
 routes.delete('/delete/:id', adminAuthMiddleware, (req, res) => {
     let id = req.params.id;
 

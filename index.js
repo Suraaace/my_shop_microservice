@@ -19,39 +19,14 @@ app.use(bodyParser.urlencoded({
 require('./DB');
 
 // ====================== Frontend Routes ======================
-//require('./routes/admin.routes');
-//require('./routes/frontend.routes');
+const adminRoutes = require('./routes/admin.routes');
+const frontendRoutes = require('./routes/frontend.routes');
 
-const authFrontendModule = require('./modules/frontend/auth.module');
-app.use('/api/auth', authFrontendModule);
+const routes = [...adminRoutes, ...frontendRoutes];
 
-const userFrontendModule = require('./modules/frontend/user.module');
-app.use('/api/user', userFrontendModule);
-
-const productFrontendModule = require('./modules/frontend/product.module');
-app.use('/api/product', productFrontendModule);
-
-const categoryFrontendModule = require('./modules/frontend/category.module');
-app.use('/api/category', categoryFrontendModule);
-
-const orderFrontendModule = require('./modules/frontend/order.module');
-app.use('/api/order', orderFrontendModule);
-
-//====================== Backend Routes ======================
-const authAdminModule = require('./modules/admin/auth.module');
-app.use('/api/admin/auth', authAdminModule);
-
-const userAdminModule = require('./modules/admin/user.module');
-app.use('/api/admin/user', userAdminModule);
-
-const productAdminModule = require('./modules/admin/product.module');
-app.use('/api/admin/product', productAdminModule);
-
-const categoryAdminModule = require('./modules/admin/category.module');
-app.use('/api/admin/category', categoryAdminModule);
-
-const orderAdminModule = require('./modules/admin/order.module');
-app.use('/api/admin/order', orderAdminModule);
+for( let route of routes) {
+  app.use(route.url, route.module)
+}
 
 let port = process.env.PORT;
 app.listen(port);

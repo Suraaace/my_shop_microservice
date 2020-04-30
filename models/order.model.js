@@ -12,7 +12,11 @@ const orderSchema = new Schema({
     },
     status: {
         type: String
-    }
+    },
+},
+{   
+        timestamps: true,
+        collection: 'orders'
 });
 
 const Order = mongoose.model('Order', orderSchema);
