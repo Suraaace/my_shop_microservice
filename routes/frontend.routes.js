@@ -19,6 +19,14 @@ const routes = [
         url: '/api/order',
         module: require('../modules/frontend/order.module')
     },
+    {
+        url: '/api/coupon',
+        module: require('../modules/frontend/coupon.module')
+    },
+    {
+        url: '/api/subscription',
+        module: require('../modules/frontend/subscription.module')
+    },
 ];
 
 module.exports = routes;

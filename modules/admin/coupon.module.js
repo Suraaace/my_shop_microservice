@@ -1,36 +1,78 @@
 const express = require('express');
 const routes = express.Router();
+const helper = require('../../helper/helper');
 
 let Coupon = require('../../models/coupon.model');
 
 routes.route('/create').post((req, res)=> {
+   
+    try {
+        let obj= {
+            couponCode: helper.generateCoupon(),
+            usage: req.body.usage,
+            limit: req.body.limit,
+            expiry: req.body.expiry
+        };
+    
+        let coupon = new Coupon(obj);
+        coupon.save().then((coupon)=>{
+            let response ={
+                success: true,
+                messsage: 'Coupon Created',
+                data: coupon
+            };
+            res.status(200).json(response);
+        })
+        
+    } catch (error) {
+        // console.log(error);
+        res.status(400).send({
+            success: false,
+            messsage: error
+        })        
+    }   
+    
+});
 
-    couponGen = ()=> {
-        var result = '';
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for ( var i = 0; i < 5; i++ ) {
-           result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        } 
-        return result;
+routes.route('/').get(async (req, res) => {
+    
+    try {
+       let dataCount = await Coupon.countDocuments();
+
+        let coupon = await Coupon.find({});
+
+        let response = {
+            success : true,
+            messsage : "List of Coupon",
+            data: coupon,
+            count : dataCount
+        };
+                   
+        res.status(200).json(response);
+
+    } catch (error) {
+        // console.log(error);
+        res.status(400).send({
+            success:false,
+            messsage:error
+        })
     }
+    
+})
 
-    let obj= {
-        coupon: couponGen,
-        // usage: '',
-        // limit: '',
-        // expiry: ''
-    };
+routes.route('/delete/:id').delete((req, res) => {
+    let id = req.params.id;
 
-    let coupon = new Coupon(obj);
-    coupon.save().then((coupon)=>{
-        let response ={
+    Coupon.findByIdAndRemove({_id: id}, (err, coupon) => {
+        if (err) return console.error(err);
+
+        let response= {
             success: true,
-            messsage: 'Coupon Created',
-            data: coupon
+            messsage: "Coupon deleted.",
+            data: []
         };
         res.status(200).json(response);
-    })
+    });
 });
 
 module.exports = routes;

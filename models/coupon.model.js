@@ -12,7 +12,7 @@ const couponSchema = new Schema({
         type: String
     },
     expiry: {
-        type: String
+        type: Date
     },
 }, 
     {
