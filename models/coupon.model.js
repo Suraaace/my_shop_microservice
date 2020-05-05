@@ -14,6 +14,9 @@ const couponSchema = new Schema({
     expiry: {
         type: Date
     },
+    price: {
+        type: Number
+    }
 }, 
     {
         timestamps: true,
