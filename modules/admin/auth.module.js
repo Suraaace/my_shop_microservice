@@ -1,5 +1,6 @@
 const express = require('express');
 const routes = express.Router();
+const jwt = require('jsonwebtoken');
 const User = require("../../models/user.model");
 
 // api/auth/login
@@ -45,6 +46,31 @@ routes.post('/login', async ( req, res) => {
     //es5 => node
     //es6 => react
 
+});
+
+// validate token
+routes.get('/validate/jwt', async ( req, res) => {
+
+    try {
+
+        let token = req.query.token;
+        const data = jwt.verify(token, process.env.JWT_KEY);
+        const user = await User.findOne({_id: data._id, token: token});
+        if(!user) {
+            throw new Error('erro');
+        }
+
+        res.status(200).send({
+            success: true,
+            message: "Valid Token"
+        })
+
+    } catch (err) {
+        res.status(401).send({
+            success: false,
+            message: "Token Expired"
+        })
+    }
 });
 
 module.exports = routes;

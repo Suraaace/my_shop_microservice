@@ -25,18 +25,23 @@ routes.post('/create', frontendAuthMiddleware, (req, res) => {
 });
 
 routes.get('/:id', frontendAuthMiddleware, (req, res) => {
-    let id = req.params.id;
+    try {
+        let id = req.params.id;
 
-    User.findOne({_id: id}, (err, user) => {
-        if (err) return console.error(err);
-        let response = {
-            success: true,
-            message: "User details",
-            data: user
-        };
+        User.findOne({_id: id}, (err, user) => {
+            if (err) return console.error(err);
+            let response = {
+                success: true,
+                message: "User details",
+                data: user
+            };
 
-        res.status(200).json(response);
-    });
+            res.status(200).json(response);
+        });
+    } catch (err) {
+        res.status(500).json(err)
+    }
+
 });
 
 routes.post('/update/:id', frontendAuthMiddleware, (req, res) => {

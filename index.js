@@ -29,6 +29,21 @@ for( let route of routes) {
 }
 
 let port = process.env.PORT;
-app.listen(port);
+//app.listen(port);
+var server = app.listen(port);
+
+const io = require('socket.io').listen(server);
+io.on("connection", socket => {
+  console.log("New client connected "+socket.id);
+  socket.on("disconnect", () => console.log("Client disconnected "+socket.id));
+
+  socket.on("generalMessage", (data) => {
+    //console.log(data);
+    io.emit('messageToAdmin', data);
+    io.emit('generalMessage_'+data.chatId, data);
+  });
+
+});
+app.set('socketio', io);
 
 console.log('Server is started at http://localhost:'+port);
