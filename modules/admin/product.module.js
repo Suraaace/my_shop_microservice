@@ -43,7 +43,7 @@ routes.get('/', adminAuthMiddleware, async (req, res) => {
             success: false,
             message: err
         });
-    }
+    };
 });
 
 routes.get('/:id', adminAuthMiddleware, (req, res) => {
